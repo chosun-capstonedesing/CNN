@@ -4,12 +4,13 @@ from torch.utils.data import DataLoader
 import os
 from sklearn.metrics import precision_score, recall_score, f1_score, classification_report
 from CNN import SimpleCNN, train_model  # train_model 함수도 import
+import tqdm
 
 # 데이터 경로 설정
 data_dir = "/home/limch/aa/CNN/exe"
 # 🚨 중요: 실제로 평가할 학습된 모델 파일의 정확한 경로로 수정해주세요.
 # 예: model_path = "./saved_models_v_experiment_ClassWeights/best_model.pth"
-model_path = "/home/limch/aa/CNN/model.pth"
+model_path = "/home/limch/aa/CNN/saved_models_v_experiment_ClassWeights/best_model.pth"  # 모델 경로 설정
 
 # 모델 파일 존재 여부 확인
 if not os.path.exists(model_path):
@@ -104,7 +105,7 @@ print("\n클래스별 평가 시작...")
 print("-" * 50)
 
 with torch.no_grad():
-    for images, labels in tqdm(dataloader, desc="평가 진행"):
+     for images, labels in tqdm.tqdm(dataloader, desc="평가 진행"):
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         _, predicted = torch.max(outputs, 1)
